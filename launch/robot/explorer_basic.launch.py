@@ -9,35 +9,23 @@ import os
 # This launch file launches the lidar, the base controller and a teleop node
 
 def generate_launch_description():
-    base_pkg = FindPackageShare('bender_base')
-    sensor_pkg = FindPackageShare('bender_sensors')
-    joy_pkg = FindPackageShare('bender_joy')
+    base_pkg = FindPackageShare('explorer_core')
+    joy_pkg = FindPackageShare('explorer_joy')
     twist_mux_params = PathJoinSubstitution([
         joy_pkg,
         'params',
         'twist_mux.yaml'
     ])
     
-    rosaria2_node = IncludeLaunchDescription(
+    explorer_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([
                 base_pkg,
                 'launch',
-                'rosaria2.launch.py'
+                'robot.launch.py'
             ])
         )
     )
-    lidar_node = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution([
-                sensor_pkg,
-                'launch',
-                'lidar',
-                'rplidar_c1_launch.py'
-            ])
-        )
-    )
-    
     joy_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([
@@ -55,8 +43,7 @@ def generate_launch_description():
             remappings=[('/cmd_vel_out','/cmd_vel')]
     )
     return LaunchDescription([
+        explorer_sim,
         joy_node,
-        lidar_node,
-        rosaria2_node,
         twist_mux
     ])

@@ -9,21 +9,8 @@ from launch_ros.substitutions import FindPackageShare
 # also launches the localization and navigation, so it centralizes it to a single
 # launch file
 def generate_launch_description():
-    bringup_pkg = FindPackageShare('bender_bringup')
-    description_pkg = FindPackageShare('bender_description')
+    bringup_pkg = FindPackageShare('explorer_bringup')
 
-
-    display_node = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution([
-                description_pkg,
-                'launch',
-                'display.launch.py'
-
-            ])
-        )
-    )
- 
     basic_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([
@@ -36,7 +23,6 @@ def generate_launch_description():
     )
  
     return LaunchDescription([
-        display_node,
         basic_node,
     ])
 
