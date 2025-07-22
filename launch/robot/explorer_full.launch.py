@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.substitutions import PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
@@ -22,9 +22,38 @@ def generate_launch_description():
         )
     )
  
+    localization_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                bringup_pkg, 'launch', 'localization', 'slam_toolbox.launch.py'
+            ])
+        )
+    )
+
+    navigation_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                bringup_pkg, 'launch', 'navigation', 'navigation_launch.py'
+            ])
+        )
+    )
+
+    localization_launch = TimerAction(
+        period=5.0,
+        actions=[localization_node]
+    )
+
+    navigation_launch = TimerAction(
+        period=10.0,
+        actions=[navigation_node]
+    )
+
     return LaunchDescription([
         basic_node,
+        localization_launch,
+        navigation_launch,
     ])
+
 
 
 
