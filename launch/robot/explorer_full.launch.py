@@ -17,7 +17,7 @@ def generate_launch_description():
                 bringup_pkg,
                 'launch',
                 'robot',
-                'bender_basic.launch.py'
+                'explorer_basic.launch.py'
             ])
         )
     )
