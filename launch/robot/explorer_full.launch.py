@@ -39,12 +39,12 @@ def generate_launch_description():
     )
 
     localization_launch = TimerAction(
-        period=5.0,
+        period=10.0,
         actions=[localization_node]
     )
 
     navigation_launch = TimerAction(
-        period=10.0,
+        period=15.0,
         actions=[navigation_node]
     )
 
